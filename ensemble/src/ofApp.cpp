@@ -222,7 +222,7 @@ void ofApp::oscMapping(){
             p += o*12.0f;
             return p;  
         };        
-        osc.out_value("/p", index).enableSmoothing( 75.0f );
+        osc.out_value("/p", index).enableSmoothing( 125.0f );
     }
 
     
@@ -232,7 +232,7 @@ void ofApp::oscMapping(){
     };      
     
     osc.out_value("/v", 1 ) * 15.0 >> filter.in_cutoff();
-    osc.out_value("/v", 1 ).enableSmoothing( 3000.0f ); 
+    osc.out_value("/v", 1 ).enableSmoothing( 5000.0f ); 
     osc.out_value("/v", 2 ) * 12.0 >> filter.in_cutoff();
     osc.out_value("/v", 2 ).enableSmoothing( 20.0f ); 
     
