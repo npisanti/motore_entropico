@@ -13,6 +13,7 @@
 #include "effect/Chorus.h"
 #include "effect/Filter.h"
 #include "meter/RMS.h"
+#include "dynamics/Brickwall.h"
 #include "ofxDotFrag.h"
 
 class ofApp : public ofBaseApp{
@@ -72,6 +73,11 @@ class ofApp : public ofBaseApp{
         np::effect::Filter filter;
         np::effect::Chorus chorus;
         std::vector<float> dtriggers;
+        
+        np::dynamics::Brickwall limiter;
+        pdsp::LowCut revcut;
+        pdsp::LowCut delaycut;
+        pdsp::LowCut dtcut;
         
         std::atomic<int> select;
         std::atomic<float> fragamount;

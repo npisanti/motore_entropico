@@ -21,14 +21,16 @@ void ofApp::setup(){
     table.setup( 6, "modal table" );
     
     for( size_t i=0; i<synths.size(); ++i ){
-        synths[i].out("gain") >> delays.ch(0);
-        synths[i].out("gain") >> delays.ch(1);   
-        synths[i].out("gain") >> reverbGain >> reverb; 
+        synths[i].out("gain") >> delaycut.ch(0) >> delays.ch(0);
+        synths[i].out("gain") >> delaycut.ch(1) >> delays.ch(1);   
+        synths[i].out("gain") >> reverbGain; 
     }
     
+    reverbGain >> revcut >> reverb; 
+    
     for( int i=0; i<NUMSYNTHS; ++i ){
-        synths[i].out("gain") * pdsp::panL(pdsp::spread(i, NUMSYNTHS, 0.7f) ) >> engine.audio_out(0);
-        synths[i].out("gain") * pdsp::panR(pdsp::spread(i, NUMSYNTHS, 0.7f) ) >> engine.audio_out(1);  
+        synths[i].out("gain") * pdsp::panL(pdsp::spread(i, NUMSYNTHS, 0.7f) ) >> limiter.ch(0);
+        synths[i].out("gain") * pdsp::panR(pdsp::spread(i, NUMSYNTHS, 0.7f) ) >> limiter.ch(1);  
     }
 
     synths[1].out("signal") >> synths[0].in("other");
@@ -42,11 +44,14 @@ void ofApp::setup(){
     delays.ch(0) >> meterL >> engine.blackhole();
     delays.ch(1) >> meterR >> engine.blackhole();
     
-    reverb.ch(0) >> engine.audio_out(0);
-    reverb.ch(1) >> engine.audio_out(1);
+    reverb.ch(0) >> limiter.ch(0);
+    reverb.ch(1) >> limiter.ch(1);
  
-    delays.ch(0) >> engine.audio_out(0);
-    delays.ch(1) >> engine.audio_out(1);
+    delays.ch(0) >> limiter.ch(0);
+    delays.ch(1) >> limiter.ch(1);
+   
+    limiter.ch(0) >> engine.audio_out(0);
+    limiter.ch(1) >> engine.audio_out(1);
 
 
     dtsynth.setup( 8 );
@@ -55,9 +60,13 @@ void ofApp::setup(){
         dtriggers[i] = 0.0f;
     }
     
-    dtsynth.ch(0) >> filter >> reverbGain;
-                     filter >> chorus.ch(0) >> engine.audio_out(0);
-                     filter >> chorus.ch(1) >> engine.audio_out(1);
+    dtsynth.ch(0) >> dtcut >> filter >> reverbGain;
+                              filter >> chorus.ch(0) >> limiter.ch(0);
+                              filter >> chorus.ch(1) >> limiter.ch(1);
+
+    100.0f >> dtcut.in_freq();
+    100.0f >> revcut.in_freq();
+    100.0f >> delaycut.in_freq();
 
     webcam.setDeviceID(0);
     webcam.setDesiredFrameRate(60);
@@ -101,6 +110,7 @@ void ofApp::setup(){
         synthsGUI.add( dtsynth.parameters );
         synthsGUI.add( filter.parameters );
         synthsGUI.add( chorus.parameters );
+        synthsGUI.add( limiter.parameters );
     synthsGUI.loadFromFile("synths.xml");
     
     fxGUI.setup("FX", "fx.xml", 10, 320);
