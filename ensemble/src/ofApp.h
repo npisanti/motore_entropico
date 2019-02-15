@@ -108,4 +108,6 @@ class ofApp : public ofBaseApp{
         
         np::meter::RMS meterL;
         np::meter::RMS meterR;
+        
+        ofParameter<float> slewfreq;
 };

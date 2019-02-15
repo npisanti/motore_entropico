@@ -111,6 +111,7 @@ void ofApp::setup(){
         synthsGUI.add( filter.parameters );
         synthsGUI.add( chorus.parameters );
         synthsGUI.add( limiter.parameters );
+        synthsGUI.add( slewfreq.set("slew", 50.0f, 50.0f, 0.001f) );
     synthsGUI.loadFromFile("synths.xml");
     
     fxGUI.setup("FX", "fx.xml", 10, 320);
@@ -208,12 +209,35 @@ void ofApp::oscMapping(){
 
         osc.out_value("/f", index) * 0.1f >> synths[index].in("fm_amount");
 
-        osc.out_value("/e", index) >> synths[index].in("decay");
-        osc.parser("/e", index) = [&]( float value ) noexcept {
+        osc.out_value("/d", index) >> synths[index].in("decay");
+        osc.parser("/d", index) = [&]( float value ) noexcept {
             value *= 0.112;
             value = (value<1.0) ? value : 1.0;
             value = value * value * 4000.0f;
             return value;  
+        };      
+        
+        osc.parser("/a", index) = [&, index]( float value ) noexcept {
+            int slew = value;
+ 
+            switch( slew ){ 
+                case 0: synths[index].slewControl.set(20000.0f); break;
+                case 1: synths[index].slewControl.set( 150.0f); break;
+                case 2: synths[index].slewControl.set( 60.0f); break;
+                case 3: synths[index].slewControl.set( 50.0f); break;
+                case 4: synths[index].slewControl.set( 40.0f); break;
+                case 5: synths[index].slewControl.set( 35.0f); break;
+                case 6: synths[index].slewControl.set( 30.0f); break;
+                case 7: synths[index].slewControl.set( 25.0f); break;
+                case 8: default: synths[index].slewControl.set( 20.0f); break;
+            }
+            
+            //slewControl.set(slewfreq);
+            value *= 0.112;
+            value = (value<1.0) ? value : 1.0;
+            value = value * value * 500.0f;
+            synths[index].attackControl.set( value );
+            return pdsp::osc::Ignore;
         };      
     }
 

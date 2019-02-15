@@ -28,6 +28,8 @@ public:
     
     float lastTrigger;
     float lastOtherTrigger;
+    pdsp::ValueControl slewControl;
+    pdsp::ValueControl attackControl;
     
 private:
     pdsp::PatchNode     voiceTrigger;
@@ -47,16 +49,16 @@ private:
     pdsp::TriggeredRandom   rnd;
     pdsp::OnePole           randomSlew;
     
+    pdsp::OnePole           pitchSlew;
+    
     pdsp::Amp fmModAmount;
     pdsp::Amp selfModAmount;
     
     pdsp::Amp  otherControl;
-
-    pdsp::ValueControl  env_attack_ctrl;
+    
     pdsp::PatchNode     decayControl;
     pdsp::Parameter     env_release_ctrl;
-    
-    void onAttack( float & value );
+
 };
 
 }} // end namspaces 
