@@ -236,6 +236,7 @@ void ofApp::oscMapping(){
             value *= 0.112;
             value = (value<1.0) ? value : 1.0;
             value = value * value * 500.0f;
+            value += 4;
             synths[index].attackControl.set( value );
             return pdsp::osc::Ignore;
         };      
