@@ -25,7 +25,7 @@
 		<pitch_drift>0</pitch_drift>
 	</fm_synth_D>
 	<datasynth>
-		<gain>-15</gain>
+		<gain>-18</gain>
 		<wave_smoothing>0.7</wave_smoothing>
 		<filter_cutoff>120</filter_cutoff>
 		<env_attack>1000</env_attack>
@@ -51,4 +51,5 @@
 		<makeup_gain>6</makeup_gain>
 		<soft_clip_threshold>-3</soft_clip_threshold>
 	</brickwall_limiter>
+	<slew>50</slew>
 </SYNTHS>
