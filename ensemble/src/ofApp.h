@@ -83,6 +83,7 @@ class ofApp : public ofBaseApp{
         std::atomic<float> fragamount;
         std::atomic<int> linecontrol;
         
+        ofFbo icon;
         ofx::dotfrag::Live polyicon;
         ofParameter<glm::vec4> envelopes;
         ofParameter<glm::vec4> crossmods;

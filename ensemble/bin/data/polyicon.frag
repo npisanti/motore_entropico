@@ -8,7 +8,6 @@ precision mediump float;
 
 uniform vec2 u_resolution;
 uniform float u_time;
-varying vec2 st; // this is already calculated in the vertex
 
 uniform vec4 u_envelopes;
 uniform vec4 u_crossmods;
@@ -27,7 +26,8 @@ float rect( vec2 st, vec2 size, float w ){
 float rand(vec2 st, float t){ return fract(sin(dot(st.xy + fract(t*0.0013) ,vec2(12.9898,78.233))) * 43758.5453); }
 
 void main(){
-
+  
+    vec2 st = gl_FragCoord.xy/u_resolution;
     float r = rand( vec2(st.x), u_time );  
     float gate = step(r, 0.3);  
     vec3 crosscolor = vec3( gate, 0, 0 );

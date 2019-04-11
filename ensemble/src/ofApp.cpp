@@ -153,6 +153,8 @@ void ofApp::setup(){
     polyicon.uniform( envelopes.set( "envelopes", glm::vec4(0),glm::vec4(0),glm::vec4(1) ), "u_envelopes" );
     polyicon.uniform( crossmods.set( "crossmods", glm::vec4(0),glm::vec4(0),glm::vec4(1) ), "u_crossmods" );
     
+    icon.allocate( FRAGW, FRAGW );
+    
     // audio setup----------------------------
     engine.sequencer.play();
     
@@ -357,6 +359,8 @@ void ofApp::update(){
     crossmods.set( glm::vec4( cross0, cross1, cross2, cross3 ) );
 
     col = linecontrol*linestep + linemin;
+    
+    polyicon.drawTo( icon );
 }
 
 //--------------------------------------------------------------
@@ -375,7 +379,8 @@ void ofApp::draw(){
         ofDrawRectangle( bandsSeparation, 0, bandsWidth, ofGetHeight() );
     ofPopMatrix();
 
-    polyicon.draw( (ofGetWidth()-FRAGW)/2, iconOffset, FRAGW, FRAGW );
+    ofSetColor( 255 );
+    icon.draw( (ofGetWidth()-FRAGW)/2, iconOffset );
     
     ofPushMatrix();    
         ofTranslate( (ofGetWidth()+CAMH)/2, camOffset + CAMH );
