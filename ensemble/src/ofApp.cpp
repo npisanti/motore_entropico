@@ -177,8 +177,8 @@ void ofApp::oscMapping(){
             }else{ synths[index].lastTrigger = value; return value;  }
         };
         
-        osc.out_value("/x", index+NUMSYNTHS) >> synths[index].in("pitch");
-        osc.parser("/x", index+NUMSYNTHS) = [&]( float value ) noexcept {
+        osc.out_value("/x", index+NUMSYNTHS+1) >> synths[index].in("pitch");
+        osc.parser("/x", index+NUMSYNTHS+1) = [&]( float value ) noexcept {
             int i = value;
             float p = table.pitches[i%table.degrees];
             int o = i / table.degrees;
