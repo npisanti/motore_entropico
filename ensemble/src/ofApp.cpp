@@ -197,8 +197,14 @@ void ofApp::oscMapping(){
         osc.parser("/r", index) = [&, index]( float value ) noexcept {
             if( value==0.0f ){ 
                 return 0.5f;
-            }else if( value>=17.0f ){
-                 return 17.0f;
+            }else if( value==17.0f ){ 
+                return 0.5f;
+            }else if( value==19.0f ){ 
+                return 0.25f;
+            }else if( value==20.0f ){ 
+                return 0.125f;
+            }else if( value>20.0f ){
+                 return 16.0f;
             }else{
                 return value;
             }
