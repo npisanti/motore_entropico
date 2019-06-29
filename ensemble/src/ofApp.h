@@ -9,12 +9,12 @@
 #include "FMMono.h"
 #include "ModalTable.h"
 #include "StereoDelay.h"
-#include "synth/DataSynth.h"
+#include "synth/WaveSynth.h"
 #include "effect/Chorus.h"
 #include "effect/Filter.h"
 #include "meter/RMS.h"
 #include "dynamics/Brickwall.h"
-#include "ofxDotFrag.h"
+#include "synth/KarplusStrong.h"
 
 class ofApp : public ofBaseApp{
 
@@ -46,7 +46,6 @@ class ofApp : public ofBaseApp{
 
         std::vector<np::synth::FMMono>  synths;
 
-        
         pdsp::ParameterGain reverbGain;
         pdsp::BasiVerb    reverb;
         npl::effect::StereoDelay delays;
@@ -56,58 +55,24 @@ class ofApp : public ofBaseApp{
         ofxPanel synthsGUI;
         ofxPanel fxGUI;
         ofxPanel tuningGUI;
-        ofxPanel fragGUI;
-        
-        ofVideoGrabber webcam;
-        int col;
-        ofFbo waveplot;
-        ofFbo camfbo;
-        ofFbo process;
-        ofx::dotfrag::Monochrome monochrome;
-        ofx::dotfrag::HSB hsb;
-        ofx::dotfrag::Twist twist;
-        
-        ofPixels pixels;
 
-        np::synth::DataSynth dtsynth;
+        
+        np::synth::WaveSynth wtsynth;
         np::effect::Filter filter;
         np::effect::Chorus chorus;
         std::vector<float> dtriggers;
+        
+        void initWaveTable( pdsp::WaveTable & wt );
         
         np::dynamics::Brickwall limiter;
         pdsp::LowCut revcut;
         pdsp::LowCut delaycut;
         pdsp::LowCut dtcut;
         
-        std::atomic<int> select;
-        std::atomic<float> fragamount;
-        std::atomic<int> linecontrol;
-        
-        ofFbo icon;
-        ofx::dotfrag::Live polyicon;
-        ofParameter<glm::vec4> envelopes;
-        ofParameter<glm::vec4> crossmods;
-        
-        std::atomic<float> meter_cross[NUMSYNTHS];
-        
+
+        np::synth::KarplusStrong ksynth;
+        std::vector<float> ktriggers;
+    
         bool bDrawGui;
-        
-        ofParameter<ofColor> bandsColor;
-        ofParameter<int> bandsWidth;
-        ofParameter<int> bandsSeparation;
-        ofParameter<int> camOffset;
-        ofParameter<int> iconOffset;
-        ofParameter<float> bandsThreshold;
-        ofParameterGroup graphics;
-        ofParameter<ofColor> waveColor;
-        
-        ofParameterGroup calibration;
-        ofParameter<int> offX;
-        ofParameter<int> offY;
-        ofParameter<int> linemin;
-        ofParameter<int> linestep;
-        
-        np::meter::RMS meterL;
-        np::meter::RMS meterR;
         
 };
