@@ -52,4 +52,31 @@
 		<soft_clip_threshold>-3</soft_clip_threshold>
 	</brickwall_limiter>
 	<slew>50</slew>
+	<wavesynth>
+		<table_index>0</table_index>
+		<filter_mode>0</filter_mode>
+		<filter_cutoff>95</filter_cutoff>
+		<filter_reso>0</filter_reso>
+		<env_attack>400</env_attack>
+		<env_decay>400</env_decay>
+		<env_sustain>1</env_sustain>
+		<env_release>1200</env_release>
+		<env_to_table>0</env_to_table>
+		<env_to_filter>30</env_to_filter>
+		<drift>0.08</drift>
+		<gain>-21</gain>
+	</wavesynth>
+	<karplus_synth>
+		<master_dB>-21</master_dB>
+		<pluck_attack>0</pluck_attack>
+		<pluck_decay>1</pluck_decay>
+		<feedback>0.75</feedback>
+		<damping>0</damping>
+		<filter_mode>0</filter_mode>
+		<filter_cutoff>136</filter_cutoff>
+		<filter_reso>0</filter_reso>
+		<filter_mod>0</filter_mod>
+		<mod_decay>30</mod_decay>
+		<mod_dyn>0.5</mod_dyn>
+	</karplus_synth>
 </SYNTHS>

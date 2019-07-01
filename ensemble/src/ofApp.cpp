@@ -129,13 +129,45 @@ void ofApp::initWaveTable( pdsp::WaveTable & wt ){
     wt.setup( 512, 128 ); // 512 samples, 128 max partials
    
     wt.addSineWave();
-    wt.addTriangleWave( pdsp::highestPartial(60.0f));    
-    wt.addSquareWave( pdsp::highestPartial(60.0f) ); 
-    wt.addSawWave( pdsp::highestPartial(60.0f) ); 
-
+    wt.addAdditiveWave ( { 1.0f, 0.0f, 0.0f, 1.0f } ); 
     wt.addAdditiveWave ( { 1.0f, 1.0f, 1.0f, 1.0f } ); 
-    wt.addAdditiveWave ({ 1.0f, 0.0f, -1.0f, 0.5f, 0.5f, 1.0f, -1.0f, 0.5f, 0.5f, 1.0f, -1.0f, 0.5f, 0.5f, 1.0f, -1.0f, 0.5f }, true ); 
+    wt.addAdditiveWave ( { 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f  } ); 
+    wt.addAdditiveWave ( { 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f } ); 
+    wt.addAdditiveWave ({ 1.0f, 0.0f, 1.0f, 0.5f, 0.5f, 1.0f, 1.0f, 0.5f, 0.5f, 1.0f, 1.0f, 0.5f, 0.5f, 1.0f, 1.0f, 0.5f } ); 
 
+    // --- NOISY WAVEs ---
+    wt.addEmpty(); 
+    int index = wt.size() -1;
+    for(int n=0; n<wt.tableLength(); n++){
+        wt.table(index)[n] = pdsp::brand();  
+    }
+    
+    wt.addEmpty(); 
+    index = wt.size() -1;
+    int pulse = wt.tableLength() / 4;
+    // setting the wavetable buffer
+    for(int n=0; n<wt.tableLength(); n++){
+        if(n<pulse){
+            wt.table(index)[n] = pdsp::brand(); 
+        }else{
+            wt.table(index)[n] = 0.0f;
+        }
+    }
+    
+    wt.addEmpty(); 
+    index = wt.size() -1;
+    pulse = wt.tableLength() / 16;
+    // setting the wavetable buffer
+    for(int n=0; n<wt.tableLength(); n++){
+        if(n<pulse){
+            wt.table(index)[n] = pdsp::brand(); 
+        }else{
+            wt.table(index)[n] = 0.0f;
+        }
+    }
+    
+
+    
 }
 
 
@@ -231,12 +263,11 @@ void ofApp::oscMapping(){
             return p;  
         };       
         
-        osc.out_value("/l", 0 ) * 12.0f >> ksynth.in_pitch( index );
-        osc.out_value("/l", 1 )  >> ksynth.voices[index].in("pluck_decay");
-        osc.out_value("/l", 2 )  >> ksynth.voices[index].in("fb");
+        osc.out_value("/l", 0 )  >> ksynth.voices[index].in("pluck_decay");
+        osc.out_value("/l", 0 )  >> ksynth.voices[index].in("fb");
     }
     
-    osc.parser("/l", 1) = [&]( float value ) noexcept {
+    osc.parser("/l", 0) = [&]( float value ) noexcept {
         value *= 0.112;
         value = (value<1.0) ? value : 1.0;
         value = value * value;
@@ -244,7 +275,7 @@ void ofApp::oscMapping(){
         return value;  
     };          
     
-    osc.parser("/l", 2) = [&]( float value ) noexcept {
+    osc.parser("/l", 1) = [&]( float value ) noexcept {
         value *= 0.112;
         value = (value<1.0) ? value : 1.0;
         value = 1.0f - value;
