@@ -1,6 +1,8 @@
 
 # Some general ignore patterns
 
+demo*.orca
+
 *.qbs
 
 */bin/*
