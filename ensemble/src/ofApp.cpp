@@ -264,7 +264,7 @@ void ofApp::oscMapping(){
         };       
         
         osc.out_value("/l", 0 )  >> ksynth.voices[index].in("pluck_decay");
-        osc.out_value("/l", 0 )  >> ksynth.voices[index].in("fb");
+        osc.out_value("/l", 1 )  >> ksynth.voices[index].in("fb");
     }
     
     osc.parser("/l", 0) = [&]( float value ) noexcept {
